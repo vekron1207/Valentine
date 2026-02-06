@@ -1,0 +1,134 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import confetti from "canvas-confetti";
+
+interface Props {
+  name: string;
+}
+
+function fireCelebration() {
+  confetti({
+    particleCount: 150,
+    spread: 90,
+    origin: { y: 0.6 },
+    colors: ["#ff69b4", "#ff1493", "#db7093", "#ffb6c1", "#c084fc", "#e879f9"],
+  });
+
+  const duration = 4000;
+  const end = Date.now() + duration;
+  const interval = setInterval(() => {
+    if (Date.now() > end) {
+      clearInterval(interval);
+      return;
+    }
+    confetti({
+      startVelocity: 25,
+      spread: 360,
+      ticks: 50,
+      origin: { x: Math.random(), y: Math.random() * 0.3 },
+      colors: ["#ff69b4", "#ff1493", "#c084fc", "#e879f9", "#fbbf24", "#fb7185"],
+      particleCount: 20,
+    });
+  }, 300);
+}
+
+export default function Confirmation({ name }: Props) {
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    fireCelebration();
+
+    // Play "Let's Get It On" 😏
+    if (audioRef.current) {
+      audioRef.current.volume = 0.6;
+      audioRef.current.play().catch(() => {});
+    }
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.85 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.7, ease: [0.23, 1, 0.32, 1] }}
+      className="w-full max-w-[360px] mx-auto heart-glow"
+    >
+      <audio ref={audioRef} preload="auto">
+        <source src="/letsgetitOn.mp3" type="audio/mpeg" />
+      </audio>
+
+      <div className="glass-card p-10 text-center">
+        {/* Winky face */}
+        <motion.div
+          initial={{ scale: 0, rotate: -30 }}
+          animate={{ scale: 1, rotate: 0 }}
+          transition={{ delay: 0.1, type: "spring", stiffness: 200, damping: 10 }}
+          className="mb-5"
+        >
+          <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-pink-100 to-rose-200/60">
+            <motion.span
+              className="text-5xl"
+              animate={{ rotate: [0, 8, -8, 0] }}
+              transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+            >
+              😏
+            </motion.span>
+          </div>
+        </motion.div>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="text-[1.8rem] font-bold text-pink-700 mb-3"
+        >
+          I knew it 😏🔥
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="text-[1.1rem] text-pink-600 mb-1 font-medium"
+        >
+          You&apos;re stuck with me now 💖
+        </motion.p>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6 }}
+          className="text-[0.95rem] text-pink-400 font-light"
+        >
+          Happy Valentine&apos;s Day, {name}!!!
+        </motion.p>
+
+        <motion.div
+          className="mt-7 flex justify-center gap-3 text-[2rem]"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+        >
+          <motion.span
+            animate={{ y: [0, -6, 0] }}
+            transition={{ repeat: Infinity, duration: 1.8, delay: 0 }}
+          >
+            😏
+          </motion.span>
+          <motion.span
+            animate={{ scale: [1, 1.3, 1] }}
+            transition={{ repeat: Infinity, duration: 1.2 }}
+          >
+            🔥
+          </motion.span>
+          <motion.span
+            animate={{ y: [0, -6, 0] }}
+            transition={{ repeat: Infinity, duration: 1.8, delay: 0.3 }}
+          >
+            😏
+          </motion.span>
+        </motion.div>
+      </div>
+    </motion.div>
+  );
+}

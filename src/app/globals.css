@@ -1,0 +1,225 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-poppins);
+}
+
+/* Heart cursor */
+*,
+*::before,
+*::after {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='%23e8467c'%3E%3Cpath d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E")
+      11 11,
+    auto;
+}
+
+.no-select {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+html,
+body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+/* ---- Animated gradient background ---- */
+.mesh-bg {
+  background: linear-gradient(
+    135deg,
+    #ffd6e8 0%,
+    #ffc2d9 15%,
+    #f0b4d4 30%,
+    #e8c5f0 50%,
+    #d4b8f0 70%,
+    #f0c5d4 85%,
+    #ffe0ec 100%
+  );
+  background-size: 300% 300%;
+  animation: meshMove 12s ease-in-out infinite;
+  position: relative;
+}
+
+@keyframes meshMove {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 100% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 0% 100%;
+  }
+}
+
+.mesh-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 25% 30%, rgba(255, 182, 212, 0.5) 0%, transparent 45%),
+    radial-gradient(circle at 75% 70%, rgba(196, 181, 253, 0.4) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(255, 228, 240, 0.3) 0%, transparent 60%);
+  pointer-events: none;
+  animation: blobFloat 10s ease-in-out infinite;
+}
+
+@keyframes blobFloat {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(30px, -20px) scale(1.02); }
+  66% { transform: translate(-20px, 15px) scale(0.98); }
+}
+
+/* ---- Glassmorphism card ---- */
+.glass-card {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1.5px solid rgba(255, 255, 255, 0.5);
+  border-radius: 32px;
+  box-shadow:
+    0 12px 40px rgba(180, 100, 150, 0.12),
+    0 4px 12px rgba(180, 100, 150, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+/* ---- Heart glow behind card ---- */
+.heart-glow {
+  position: relative;
+}
+
+.heart-glow::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120%;
+  height: 120%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(236, 72, 153, 0.12) 0%,
+    rgba(236, 72, 153, 0.04) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ---- Input ---- */
+.input-heart {
+  width: 100%;
+  padding: 16px 24px;
+  border-radius: 20px;
+  border: 2px solid rgba(236, 72, 153, 0.15);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  text-align: center;
+  font-size: 1.1rem;
+  color: #831843;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  outline: none;
+}
+
+.input-heart::placeholder {
+  color: rgba(236, 72, 153, 0.35);
+}
+
+.input-heart:focus {
+  border-color: rgba(236, 72, 153, 0.5);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow:
+    0 0 0 4px rgba(236, 72, 153, 0.08),
+    0 4px 16px rgba(236, 72, 153, 0.1);
+}
+
+/* ---- YES button (heart style) ---- */
+.btn-yes {
+  background: linear-gradient(135deg, #f472b6, #ec4899, #db2777);
+  color: white;
+  font-weight: 700;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
+  box-shadow:
+    0 6px 24px rgba(236, 72, 153, 0.35),
+    0 2px 6px rgba(236, 72, 153, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-yes::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(255, 255, 255, 0.15) 50%, transparent 60%);
+  transition: transform 0.5s ease;
+  transform: translateX(-100%);
+}
+
+.btn-yes:hover::after {
+  transform: translateX(100%);
+}
+
+.btn-yes:hover {
+  box-shadow:
+    0 8px 28px rgba(236, 72, 153, 0.45),
+    0 4px 8px rgba(236, 72, 153, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.btn-yes:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* ---- NO button ---- */
+.btn-no {
+  background: rgba(148, 163, 184, 0.15);
+  backdrop-filter: blur(8px);
+  color: #94a3b8;
+  font-weight: 500;
+  border-radius: 16px;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn-no:hover {
+  background: rgba(148, 163, 184, 0.2);
+}
+
+.btn-no:active {
+  transform: scale(0.97);
+}
+
+/* ---- Soft button (for name entry) ---- */
+.btn-soft {
+  background: linear-gradient(135deg, #f9a8d4, #f472b6);
+  color: white;
+  font-weight: 600;
+  border-radius: 20px;
+  padding: 16px 28px;
+  font-size: 1.05rem;
+  box-shadow:
+    0 4px 16px rgba(244, 114, 182, 0.3),
+    0 1px 4px rgba(244, 114, 182, 0.15);
+  transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn-soft:hover {
+  box-shadow:
+    0 6px 20px rgba(244, 114, 182, 0.4),
+    0 2px 6px rgba(244, 114, 182, 0.2);
+  transform: translateY(-1px);
+}
+
+.btn-soft:active {
+  transform: translateY(0) scale(0.97);
+}

@@ -1,0 +1,51 @@
+Valentine Website – Technical Design Write-Up
+
+Goals: A mobile-first playful website that: 1. Asks for name input 2.
+Validates variations of “Aastha” 3. Rejects non-matching names with
+animation 4. Shows Valentine prompt 5. “No” button runs away smoothly
+and fast 6. “Yes” button confirms and shows cute message 7. Works
+perfectly on phone 8. Deployable instantly on Vercel
+
+Tech Stack: Framework: Next.js (App Router) Language: TypeScript
+Styling: Tailwind CSS Animation: Framer Motion State: React local state
+Hosting: Vercel
+
+Architecture Overview: Single-page app with internal UI states:
+NAME_INPUT → REJECT_SCREEN or VALENTINE_SCREEN → CONFIRMATION_SCREEN
+
+Component Structure: app/page.tsx components/NameGate.tsx
+components/RejectScreen.tsx components/ValentinePrompt.tsx
+components/Confirmation.tsx components/RunawayButton.tsx
+
+Name Validation Logic: Use Fuse.js for fuzzy matching of name
+variations: Valid examples: aastha, aashta, astha, aasthaa Normalize
+input to lowercase and remove spaces before matching.
+
+Reject Screen Animation: Text: “Go away wench!!!” Animations: shake,
+zoom, red flash, bounce exit Auto-return after 2 seconds.
+
+Valentine Screen Layout: Centered vertical mobile layout: ❤️ Will you be
+my Valentine? ❤️ [ YES 💘 ] [ NO ❌ ]
+
+Runaway “NO” Button Mechanics: Track pointer proximity using touch/mouse
+events. If pointer distance < threshold → teleport button. Use absolute
+positioning and Framer Motion spring animation.
+
+YES Button Action: Trigger confetti using canvas-confetti Animate hearts
+and fade to confirmation screen.
+
+Confirmation Screen: Message: “You’re stuck with me now 💖 Happy
+Valentine’s Day!!!”
+
+Mobile Optimization: Disable zoom scaling Use touch-action: manipulation
+Large finger-friendly buttons
+
+Styling Theme: Pink/lavender romantic gradient background Floating heart
+animations
+
+Deployment Flow: 1. npx create-next-app valentine-site 2. Install
+dependencies: npm install framer-motion fuse.js canvas-confetti 3. Push
+to GitHub 4. Deploy via Vercel
+
+Optional Enhancements: Background music Haptic vibration Fireworks
+animation Custom heart cursor Shake-to-trigger hearts
