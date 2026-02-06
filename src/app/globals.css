@@ -18,6 +18,10 @@
   user-select: none;
 }
 
+html {
+  overflow-y: scroll; /* Always show scrollbar to prevent jumping */
+}
+
 html,
 body {
   overscroll-behavior: none;

@@ -21,7 +21,7 @@ export default function Home() {
           {!showReject ? (
             <NameGate
               key="name"
-              onValid={(name) => router.push(`/valentine?name=${encodeURIComponent(name)}`)}
+              onValid={(name) => router.push(`/calendar?name=${encodeURIComponent(name)}`)}
               onInvalid={() => setShowReject(true)}
             />
           ) : (

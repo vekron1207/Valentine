@@ -84,14 +84,14 @@ export default function Confirmation({ name }: Props) {
             <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-pink-100 to-rose-200/60">
               <motion.span
                 className="text-5xl"
-                animate={{ rotate: [0, 8, -8, 0] }}
+                animate={{ scale: [1, 1.15, 1] }}
                 transition={{
                   repeat: Infinity,
-                  duration: 2,
+                  duration: 1.5,
                   ease: "easeInOut",
                 }}
               >
-                😏
+                💖
               </motion.span>
             </div>
           </motion.div>
@@ -102,7 +102,7 @@ export default function Confirmation({ name }: Props) {
             transition={{ delay: 0.2 }}
             className="text-[1.8rem] font-bold text-pink-700 mb-3"
           >
-            I knew it 😏🔥
+            You Said YES! 💕
           </motion.h1>
 
           <motion.p
@@ -132,19 +132,19 @@ export default function Confirmation({ name }: Props) {
               animate={{ y: [0, -6, 0] }}
               transition={{ repeat: Infinity, duration: 1.8 }}
             >
-              😏
+              💕
             </motion.span>
             <motion.span
               animate={{ scale: [1, 1.3, 1] }}
               transition={{ repeat: Infinity, duration: 1.2 }}
             >
-              🔥
+              💖
             </motion.span>
             <motion.span
               animate={{ y: [0, -6, 0] }}
               transition={{ repeat: Infinity, duration: 1.8, delay: 0.3 }}
             >
-              😏
+              💝
             </motion.span>
           </motion.div>
 
