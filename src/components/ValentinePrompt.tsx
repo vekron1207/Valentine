@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const messages = [
@@ -42,6 +42,27 @@ const noTexts = [
   "💔",
 ];
 
+// Typewriter hook
+function useTypewriter(text: string, speed = 40) {
+  const [displayed, setDisplayed] = useState("");
+
+  useEffect(() => {
+    let i = 0;
+    setDisplayed("");
+    const interval = setInterval(() => {
+      if (i < text.length) {
+        setDisplayed(text.slice(0, i + 1));
+        i++;
+      } else {
+        clearInterval(interval);
+      }
+    }, speed);
+    return () => clearInterval(interval);
+  }, [text, speed]);
+
+  return displayed;
+}
+
 interface Props {
   name: string;
   onYes: () => void;
@@ -51,90 +72,146 @@ export default function ValentinePrompt({ name, onYes }: Props) {
   const [noCount, setNoCount] = useState(0);
 
   const msgIndex = Math.min(noCount, messages.length - 1);
+  const typedMessage = useTypewriter(messages[msgIndex], 40);
 
-  // YES button grows: padding and font size increase naturally in flow
   const yesPadY = 16 + noCount * 4;
   const yesFontSize = 1.05 + noCount * 0.08;
 
-  // NO button shrinks
   const noOpacity = Math.max(0.4, 1 - noCount * 0.07);
   const noFontSize = Math.max(0.7, 1 - noCount * 0.04);
   const noPadY = Math.max(6, 12 - noCount * 1);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -30 }}
-      transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+      initial={{ opacity: 0, scale: 0.9, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95, y: -10 }}
+      transition={{
+        duration: 0.5,
+        ease: [0.34, 1.56, 0.64, 1],
+        opacity: { duration: 0.3 }
+      }}
       className="w-full max-w-[360px] mx-auto heart-glow"
     >
       <div className="glass-card p-10 text-center">
-        {/* Pulsing heart */}
         <motion.div
-          animate={{ scale: [1, 1.15, 1] }}
-          transition={{ repeat: Infinity, duration: 1.4, ease: "easeInOut" }}
+          initial={{ scale: 0, rotate: -20 }}
+          animate={{
+            scale: [0, 1.1, 1],
+            rotate: [-20, 5, 0]
+          }}
+          transition={{
+            duration: 0.6,
+            ease: [0.34, 1.56, 0.64, 1],
+            times: [0, 0.6, 1]
+          }}
           className="mb-5"
         >
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-pink-100 to-rose-200/60">
-            <span className="text-4xl">❤️</span>
+            <motion.span
+              className="text-4xl"
+              animate={{ scale: [1, 1.1, 1] }}
+              transition={{
+                repeat: Infinity,
+                duration: 1.5,
+                ease: "easeInOut",
+                delay: 0.7
+              }}
+            >
+              ❤️
+            </motion.span>
           </div>
         </motion.div>
 
-        {/* Name */}
-        <h1 className="text-[1.5rem] font-bold text-pink-700 mb-2">
+        <motion.h1
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.4 }}
+          className="text-[1.5rem] font-bold text-pink-700 mb-2"
+        >
           Hey {name}!
-        </h1>
+        </motion.h1>
 
-        {/* Desperate message - always visible above buttons */}
-        <div className="min-h-[3rem] flex items-center justify-center mb-7">
+        {/* Typewriter message */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.35, duration: 0.4 }}
+          className="min-h-[3rem] flex items-center justify-center mb-7"
+        >
           <AnimatePresence mode="wait">
             <motion.p
               key={msgIndex}
-              initial={{ opacity: 0, y: 6, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.3 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
               className="text-[1rem] text-pink-500 font-light"
             >
-              {messages[msgIndex]}
+              {typedMessage}
+              <motion.span
+                animate={{ opacity: [1, 0] }}
+                transition={{ repeat: Infinity, duration: 0.6 }}
+                className="text-pink-400"
+              >
+                |
+              </motion.span>
             </motion.p>
           </AnimatePresence>
-        </div>
+        </motion.div>
 
-        {/* Buttons */}
-        <div className="flex flex-col gap-3">
-          {/* YES - grows naturally via padding/font, stays in flow */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.4 }}
+          className="flex flex-col gap-3"
+        >
           <motion.button
             onClick={onYes}
             className="btn-yes w-full"
-            animate={{
+            style={{
               paddingTop: yesPadY,
               paddingBottom: yesPadY,
               fontSize: `${yesFontSize}rem`,
             }}
-            transition={{ type: "spring", stiffness: 250, damping: 18 }}
+            animate={{
+              scale: 1 + (noCount * 0.05)
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 20
+            }}
+            whileHover={{ scale: 1.02 + (noCount * 0.05) }}
+            whileTap={{ scale: 0.98 + (noCount * 0.05) }}
           >
             {yesTexts[msgIndex]}
           </motion.button>
 
-          {/* NO - shrinks and fades, but always visible */}
           <motion.button
             onClick={() => setNoCount((c) => c + 1)}
             className="btn-no w-full"
-            animate={{
+            style={{
               opacity: noOpacity,
               fontSize: `${noFontSize}rem`,
               paddingTop: noPadY,
               paddingBottom: noPadY,
             }}
-            transition={{ type: "spring", stiffness: 250, damping: 18 }}
+            animate={{
+              scale: 1 - (noCount * 0.03)
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 20
+            }}
+            whileHover={{ scale: 1.02 - (noCount * 0.03) }}
+            whileTap={{ scale: 0.98 - (noCount * 0.03) }}
           >
             {noTexts[msgIndex]}
           </motion.button>
-        </div>
+        </motion.div>
 
-        {/* Cheeky hint */}
         <AnimatePresence>
           {noCount >= 3 && (
             <motion.p

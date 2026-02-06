@@ -1,11 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Poppins } from "next/font/google";
+import { Poppins, Caveat } from "next/font/google";
 import "./globals.css";
 
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
+});
+
+const caveat = Caveat({
+  variable: "--font-caveat",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -28,7 +34,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${poppins.variable} font-sans antialiased no-select`}
+        className={`${poppins.variable} ${caveat.variable} font-sans antialiased no-select`}
         style={{ touchAction: "manipulation" }}
       >
         {children}
