@@ -84,14 +84,31 @@ export function getCurrentDate() {
 }
 
 export function isDayUnlocked(dayDate: number): boolean {
-  // PRODUCTION CODE: Sequential unlocking enabled
   const day = VALENTINE_DAYS.find(d => d.date === dayDate);
   if (!day) return false;
 
-  // Day 1 (Rose Day) is always unlocked
+  const { day: currentDay, month, year } = getCurrentDate();
+
+  // Check if it's February 2026
+  const isFebruary2026 = month === 1 && year === 2026;
+
+  // If not February 2026, unlock all days (for testing/viewing after the event)
+  if (!isFebruary2026) {
+    // Still require sequential completion
+    if (day.id === 1) return true;
+    const previousDay = VALENTINE_DAYS.find(d => d.id === day.id - 1);
+    if (!previousDay) return false;
+    return isDayCompleted(previousDay.id);
+  }
+
+  // During February 2026: Check both date AND completion
+  // The day must have arrived (current date >= day's date)
+  if (currentDay < dayDate) return false;
+
+  // Day 1 (Rose Day) unlocks on Feb 7
   if (day.id === 1) return true;
 
-  // For other days, check if the previous day is completed
+  // For other days, previous day must be completed
   const previousDay = VALENTINE_DAYS.find(d => d.id === day.id - 1);
   if (!previousDay) return false;
 
