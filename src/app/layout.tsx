@@ -17,6 +17,24 @@ const caveat = Caveat({
 export const metadata: Metadata = {
   title: "Be My Valentine? 💕",
   description: "A special Valentine's Day surprise just for you!",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "My Valentine",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  icons: {
+    icon: [
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+  },
 };
 
 export const viewport: Viewport = {
@@ -24,6 +42,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  themeColor: "#ec4899",
 };
 
 export default function RootLayout({
@@ -32,10 +51,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${poppins.variable} ${caveat.variable} font-sans antialiased no-select`}
         style={{ touchAction: "manipulation" }}
+        suppressHydrationWarning
       >
         {children}
       </body>
